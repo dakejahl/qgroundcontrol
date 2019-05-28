@@ -73,9 +73,13 @@ void QGroundControlQmlGlobal::setToolbox(QGCToolbox* toolbox)
 #if defined(QGC_GST_TAISYNC_ENABLED)
     _taisyncManager         = toolbox->taisyncManager();
 #endif
+<<<<<<< HEAD
 #if defined(QGC_GST_MICROHARD_ENABLED)
     _microhardManager       = toolbox->microhardManager();
 #endif
+=======
+    _transceiverManager     = toolbox->transceiverManager();
+>>>>>>> Add: MMC model
 }
 
 void QGroundControlQmlGlobal::saveGlobalSetting (const QString& key, const QString& value)

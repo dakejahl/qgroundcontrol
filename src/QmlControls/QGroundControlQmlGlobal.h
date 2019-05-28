@@ -84,6 +84,9 @@ public:
 #if defined(QGC_ENABLE_PAIRING)
     Q_PROPERTY(PairingManager*      pairingManager      READ pairingManager         CONSTANT)
 #endif
+
+    Q_PROPERTY(TransceiverManager*  transceiverManager  READ transceiverManager     CONSTANT)
+
     Q_PROPERTY(int      supportedFirmwareCount          READ supportedFirmwareCount CONSTANT)
     Q_PROPERTY(int      supportedVehicleCount           READ supportedVehicleCount  CONSTANT)
     Q_PROPERTY(bool     px4ProFirmwareSupported         READ px4ProFirmwareSupported CONSTANT)
@@ -198,6 +201,7 @@ public:
 #else
     bool                    taisyncSupported    () { return false; }
 #endif
+    TransceiverManager*     transceiverManager  () { return _transceiverManager; }
 
     MicrohardManager*       microhardManager    () { return _microhardManager; }
 #if defined(QGC_GST_TAISYNC_ENABLED)
@@ -283,6 +287,8 @@ private:
 #if defined(QGC_ENABLE_PAIRING)
     PairingManager*         _pairingManager         = nullptr;
 #endif
+
+    TransceiverManager*     _transceiverManager     = nullptr;
 
     bool                    _skipSetupPage          = false;
 

@@ -44,6 +44,8 @@ class TaisyncManager;
 class MicrohardManager;
 #endif
 
+class TransceiverManager;
+
 /// This is used to manage all of our top level services/tools
 class QGCToolbox : public QObject {
     Q_OBJECT
@@ -77,10 +79,10 @@ public:
 #endif
 #if defined(QGC_GST_TAISYNC_ENABLED)
     TaisyncManager*             taisyncManager          () { return _taisyncManager; }
-#endif
 #if defined(QGC_GST_MICROHARD_ENABLED)
     MicrohardManager*           microhardManager        () { return _microhardManager; }
 #endif
+    TransceiverManager*         transceiverManager      () { return _transceiverManager; }
 
 private:
     void setChildToolboxes(void);
@@ -118,6 +120,7 @@ private:
 #if defined(QGC_GST_MICROHARD_ENABLED)
     MicrohardManager*           _microhardManager       = nullptr;
 #endif
+    TransceiverManager*         _transceiverManager     = nullptr;
     friend class QGCApplication;
 };
 
