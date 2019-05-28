@@ -266,6 +266,8 @@ QT += \
 
 AndroidBuild || iOSBuild {
     # Android and iOS don't unclude these
+    QT += \
+        serialport \
 } else {
     QT += \
         printsupport \
