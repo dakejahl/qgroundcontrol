@@ -1390,3 +1390,4 @@ contains (CONFIG, QGC_DISABLE_INSTALLER_SETUP) {
 include(MMC/MMC.pri)
 
 
+
