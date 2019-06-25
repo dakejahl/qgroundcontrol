@@ -67,6 +67,8 @@ ios/iOSForAppStore-Info.plist
 moc_*
 ui_*
 *.o
+*.a
+#*.so*
 *.moc
 *.prl
 
