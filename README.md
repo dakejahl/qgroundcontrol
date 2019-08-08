@@ -1,5 +1,7 @@
+# MMCUSV qgroundcontrol 
+You need to compile the qtusb first and make install.
 # QTUSB
-http://192.168.5.3/MengWei/QTUSB.git
+https://github.com/fpoussin/QtUsb.git
 
 # QGroundControl
 https://github.com/mavlink/qgroundcontrol.git
