@@ -8,7 +8,7 @@
 #include <QDateTime>
 
 #include <QUsbDevice>
-#include <QUsbTransfer>
+#include <QUsbEndpoint>
 
 extern usbfifo *g_fifo;
 extern QMutex usb_byte_fifo_mutex;
@@ -42,7 +42,7 @@ UsbExample *getUsbExample()
 }
 
 UsbExample::UsbExample(QObject *parent)
-    : QObject(parent), m_usb_dev(new QUsbDevice()), m_transfer_handler(Q_NULLPTR)
+    : QObject(parent), m_usb_dev(new QUsbDevice()), m_read_ep_1(Q_NULLPTR), m_write_ep_1(Q_NULLPTR)
 {
     this->setupDevice();
 
@@ -120,18 +120,31 @@ void UsbExample::closeDevice()
 bool UsbExample::openHandle()
 {
     qDebug("Opening Handle");
-    bool b = false;
+    bool a = false, b = false, c = false;
 
-    m_transfer_handler = new QUsbTransfer(m_usb_dev, QUsbTransfer::bulkTransfer,  0x86, 0x02/* m_read_ep, m_write_ep*/);
-    connect(m_transfer_handler, /*SIGNAL(readyRead())*/ &QUsbTransfer::readyRead, this, &UsbExample::addReadyReadTask);
-    connect(m_transfer_handler, SIGNAL(bytesWritten(qint64)), this, SLOT(onWriteComplete(qint64)));
-    b = m_transfer_handler->open(QIODevice::ReadWrite);
 
-    m_config_handler = new QUsbTransfer(m_usb_dev, QUsbTransfer::bulkTransfer, 0x84, 0x01); //set
-    connect(m_config_handler, /*SIGNAL(readyRead())*/ &QUsbTransfer::readyRead, this, &UsbExample::addReadyReadTask);
-    b &= m_config_handler->open(QIODevice::ReadWrite);
+    m_read_ep_1 = new QUsbEndpoint(m_usb_dev, QUsbEndpoint::bulkEndpoint, 0x86); // 0x86 read endpoint
+    m_write_ep_1 = new QUsbEndpoint(m_usb_dev, QUsbEndpoint::bulkEndpoint, 0x02); // 0x02 write endpoint
 
-    return b;
+    connect(m_read_ep_1, &QUsbEndpoint::readyRead, this, &UsbExample::addReadyReadTask);
+    connect(m_write_ep_1, SIGNAL(bytesWritten(qint64)), this, SLOT(onWriteComplete(qint64)));
+
+    a = m_read_ep_1->open(QIODevice::ReadOnly);
+    b = m_write_ep_1->open(QIODevice::WriteOnly);
+
+
+    /////////////////////////////////////////////////////
+    // Do the next one
+    /////////////////////////////////////////////////////
+
+    m_read_ep_2 = new QUsbEndpoint(m_usb_dev, QUsbEndpoint::bulkEndpoint, 0x84); // 0x84 read endpoint
+    m_write_ep_2 = new QUsbEndpoint(m_usb_dev, QUsbEndpoint::bulkEndpoint, 0x01); // 0x01 write endpoint
+
+    connect(m_read_ep_2, &QUsbEndpoint::readyRead, this, &UsbExample::addReadyReadTask);
+
+    c = m_read_ep_2->open(QIODevice::ReadOnly);
+
+    return a && b && c;
 }
 
 void UsbExample::addReadTask()
@@ -147,11 +160,11 @@ void UsbExample::addReadyReadTask()
 
 void UsbExample::readUsb()
 {
-    if (m_transfer_handler) {
-        m_transfer_handler->poll();
+    if (m_read_ep_1) {
+        m_read_ep_1->poll();
     }
-    if (m_transfer_handler) {
-         m_config_handler->poll();
+    if (m_read_ep_2) {
+         m_read_ep_2->poll();
     }
 
     addReadTask();
@@ -184,54 +197,60 @@ void UsbExample::onReadyRead()
 void UsbExample::closeHandle()
 {
     qDebug("Closing Handle");
-    if (m_transfer_handler != Q_NULLPTR) {
-        m_transfer_handler->close();
-        m_transfer_handler->disconnect();
-        qInfo() << m_transfer_handler->errorString();
-        delete m_transfer_handler;
-        m_transfer_handler = Q_NULLPTR;
+    if (m_read_ep_1 != Q_NULLPTR) {
+        m_read_ep_1->close();
+        m_read_ep_1->disconnect();
+        qInfo() << m_read_ep_1->errorString();
+        delete m_read_ep_1;
+        m_read_ep_1 = Q_NULLPTR;
     }
 
-    if (m_config_handler != Q_NULLPTR) {
-        m_config_handler->close();
-        m_config_handler->disconnect();
-        qInfo() << m_config_handler->errorString();
-        delete m_config_handler;
-        m_config_handler = Q_NULLPTR;
+    if (m_read_ep_2 != Q_NULLPTR) {
+        m_read_ep_2->close();
+        m_read_ep_2->disconnect();
+        qInfo() << m_read_ep_2->errorString();
+        delete m_read_ep_2;
+        m_read_ep_2 = Q_NULLPTR;
+    }
+
+    if (m_write_ep_1 != Q_NULLPTR) {
+        m_write_ep_1->close();
+        m_write_ep_1->disconnect();
+        qInfo() << m_write_ep_1->errorString();
+        delete m_write_ep_1;
     }
 }
 
 void UsbExample::read(QByteArray *buf)
 {
-    qint64 len = m_transfer_handler->bytesAvailable();
+    qint64 len = m_read_ep_1->bytesAvailable();
     if(!len)
         return;
-    QByteArray b = /*m_transfer_handler->read(len); */ m_transfer_handler->readAll();  //yong zhe ge hui gua
-//    qDebug() << "Reading"  << b.toHex();
+    QByteArray b = m_read_ep_1->readAll();
     buf->append(b);
 }
 
 void UsbExample::write(QByteArray *buf)
 {
 //    qDebug() << "Writing" << *buf << buf->size();
-    if (m_transfer_handler->write(buf->constData(), buf->size()) < 0) {
+    if (m_write_ep_1->write(buf->constData(), buf->size()) < 0) {
         qWarning("write failed");
     }
 }
 
 void UsbExample::configRead(QByteArray *buf)
 {
-    qint64 len = m_config_handler->bytesAvailable();
+    qint64 len = m_read_ep_2->bytesAvailable();
     if(!len)
         return;
-    QByteArray b = /*m_transfer_handler->read(len); */ m_config_handler->readAll();  //yong zhe ge hui gua
+    QByteArray b = /*m_transfer_handler->read(len); */ m_read_ep_2->readAll();  //yong zhe ge hui gua
     buf->append(b);
 }
 
 void UsbExample::configWrite(QByteArray *buf)
 {
 //    qDebug() << "Writing" << *buf << buf->size();
-    if (m_config_handler->write(buf->constData(), buf->size()) < 0) {
+    if (m_write_ep_2->write(buf->constData(), buf->size()) < 0) {
         qWarning("write failed");
     }
 }
@@ -240,7 +259,7 @@ void UsbExample::setConfig()
 {
     char buff[11] = {0xFF, 0x5A, 0x5B, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01};
     QByteArray buf(buff, 11);
-    if(m_config_handler)
+    if(m_write_ep_2)
         this->configWrite(&buf);
 }
 
@@ -248,7 +267,7 @@ void UsbExample::getConfig()
 {
     char buff[10] = {0xFF, 0x5A, 0x19, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
     QByteArray buf(buff, 10);
-    if(m_config_handler)
+    if(m_write_ep_2)
         this->configWrite(&buf);
 }
 
@@ -261,7 +280,7 @@ void UsbExample::setOSD(bool state)
     }
 
     QByteArray buf(buff, 11);
-    if(m_config_handler)
+    if(m_write_ep_2)
         this->configWrite(&buf);
 }
 

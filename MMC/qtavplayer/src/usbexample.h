@@ -7,12 +7,8 @@
 #include <QTimer>
 #include "AVThread.h"
 
-//const QUsbDevice::Endpoint USB_PIPE_IN = 0x86; /* Bulk output endpoint for responses */
-//const QUsbDevice::Endpoint USB_PIPE_OUT = 0x01; /* Bulk input endpoint for commands */
-//const quint16 USB_TIMEOUT_MSEC = 300;
-
 class UsbExample;
-class QUsbTransfer;
+class QUsbEndpoint;
 class QUsbDevice;
 
 class UsbExampleTask : public Task{
@@ -77,11 +73,14 @@ private:
 
 private:
     QUsbDevice *m_usb_dev;
-    QUsbTransfer *m_transfer_handler;
-    QUsbTransfer *m_config_handler; //config
+
+    QUsbEndpoint *m_read_ep_1;
+    QUsbEndpoint *m_read_ep_2;
+    QUsbEndpoint *m_write_ep_1;
+    QUsbEndpoint *m_write_ep_2;
+
     QByteArray m_send, m_recv;
     QMutex m_recvMutex;
-    /*QUsbDevice::Endpoint*/quint8  m_read_ep, m_write_ep;
 
     AVThread mReadUsbThread;
     AVThread mReadyReadThread;
