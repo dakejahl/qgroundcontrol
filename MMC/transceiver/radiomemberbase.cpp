@@ -194,14 +194,14 @@ void RadioMemberBase::sendCheckStatus()
         set_checkStatus((CheckStatus)(checkState+1));
     }else{//不在取值范围
         return;
-    }  
+    }
     char type = 0x04;
 //#if defined(Q_OS_ANDROID)
 //    char type = 0x04;
 //#else
 //    char type = 0x4f;
 //#endif
-    char buff[1] = {checkStatus()};
+    char buff[1] = {(char)checkStatus()};
     qDebug() << "-------------------sendCheckStatus" << (uint8_t)type  <<QByteArray(buff, 1).toHex();
     emit _writeData(type, QByteArray(buff, 1));
 }
@@ -210,7 +210,7 @@ void RadioMemberBase::rockerControl(int state)
 {
     if(state != 0 && state != 1) return;
     char type = 0x6f;
-    char buff[1] = {state};
+    char buff[1] = {(char)state};
 
     emit _writeData(type, QByteArray(buff, 1));
 }

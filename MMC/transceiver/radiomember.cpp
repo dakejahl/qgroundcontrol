@@ -24,7 +24,7 @@ RadioMember::RadioMember(QObject *parent)
         connect(_key[i], SIGNAL(upspring(MMCKey*)), this, SLOT(onUpspring(MMCKey*)));
         connect(_key[i], SIGNAL(longPress(MMCKey*)), this, SLOT(onLongPress(MMCKey*)));
         connect(_key[i], SIGNAL(click(MMCKey*)), this, SLOT(onClick(MMCKey*)));
-    } 
+    }
     keyBindFunction();
 
     QSettings settings;
@@ -155,7 +155,7 @@ void RadioMember::radioControl(int state)
     if(state != 0 && state != 1 /*&& state != 2*/) return;
 
     char type = 0x7f;
-    char buff[1] = {state};
+    char buff[1] = {(char)state};
     emit _writeData(type, QByteArray(buff, 1));
 }
 

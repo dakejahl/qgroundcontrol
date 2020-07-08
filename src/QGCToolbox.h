@@ -79,6 +79,7 @@ public:
 #endif
 #if defined(QGC_GST_TAISYNC_ENABLED)
     TaisyncManager*             taisyncManager          () { return _taisyncManager; }
+#endif
 #if defined(QGC_GST_MICROHARD_ENABLED)
     MicrohardManager*           microhardManager        () { return _microhardManager; }
 #endif
