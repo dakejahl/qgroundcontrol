@@ -5,6 +5,7 @@
 
 target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
+        AM32EepromFactGroupListModel.cc
         BatteryFactGroupListModel.cc
         BatteryFactGroupListModel.h
         EscStatusFactGroupListModel.cc
@@ -49,6 +50,7 @@ target_sources(${CMAKE_PROJECT_NAME}
 # Fact Group Definition Resources
 # ----------------------------------------------------------------------------
 set(JSON_FILES
+    AM32EepromFact.json
     RPMFact.json
     TemperatureFact.json
     GPSFact.json
