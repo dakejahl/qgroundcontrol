@@ -46,7 +46,6 @@ option(QGC_VIEWER3D "Enable 3D Viewer (requires Qt Quick 3D)" ON)
 # ============================================================================
 # Communication Options
 # ============================================================================
-
 option(QGC_ENABLE_BLUETOOTH "Enable Bluetooth communication links" ON)
 option(QGC_ZEROCONF_ENABLED "Enable ZeroConf/Bonjour discovery" OFF)
 option(QGC_AIRLINK_DISABLED "Disable AIRLink support" ON)
@@ -72,8 +71,8 @@ option(QGC_ENABLE_QT_VIDEOSTREAMING "Enable QtMultimedia video backend" OFF)
 # MAVLink Configuration
 # ============================================================================
 
-set(QGC_MAVLINK_GIT_REPO "https://github.com/mavlink/mavlink.git" CACHE STRING "MAVLink repository URL")
-set(QGC_MAVLINK_GIT_TAG "dd17c1a65de7b9ad8dd6e3491a8690c0d0b27ba1" CACHE STRING "MAVLink repository commit/tag")
+set(QGC_MAVLINK_GIT_REPO "https://github.com/dakejahl/mavlink.git" CACHE STRING "MAVLink repository URL")
+set(QGC_MAVLINK_GIT_TAG "458b42a3f0c754a4a9e8f860a99dd391adee7d78" CACHE STRING "MAVLink repository commit/tag")
 set(QGC_MAVLINK_DIALECT "all" CACHE STRING "MAVLink dialect")
 set(QGC_MAVLINK_VERSION "2.0" CACHE STRING "MAVLink protocol version")
 
