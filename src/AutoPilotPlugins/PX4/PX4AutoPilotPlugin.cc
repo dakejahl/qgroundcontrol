@@ -8,6 +8,8 @@
 #include "SafetyComponent.h"
 #include "SensorsComponent.h"
 #include "ParameterManager.h"
+#include "OsdComponent.h"
+#include "OsdController.h"
 #include "Vehicle.h"
 #include "Actuators.h"
 #include "ActuatorComponent.h"
@@ -108,6 +110,11 @@ const QVariantList& PX4AutoPilotPlugin::vehicleComponents(void)
                     _motorComponent = new MotorComponent(_vehicle, this, this);
                     _motorComponent->setupTriggerSignals();
                     _components.append(QVariant::fromValue(static_cast<VehicleComponent*>(_motorComponent)));
+                }
+
+                if (_vehicle->osdController()->available()) {
+                    auto* osdComponent = new OsdComponent(_vehicle, this, this);
+                    _components.append(QVariant::fromValue(static_cast<VehicleComponent*>(osdComponent)));
                 }
 
                 _safetyComponent = new SafetyComponent(_vehicle, this, this);

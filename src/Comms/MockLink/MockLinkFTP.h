@@ -5,6 +5,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
+#include <QtCore/QTemporaryFile>
 
 #include "MAVLinkFTP.h"
 
@@ -53,6 +54,9 @@ public:
     void mavlinkMessageReceived(const mavlink_message_t &message);
 
     void enableRandomDrops(bool enable) { _randomDropsEnabled = enable; }
+
+    /// Seed a remote file for download tests. Uploads replace the same remote file.
+    void setFileContents(const QString& path, const QByteArray& contents) { _files.insert(path, contents); }
 
     /// Returns the list of remote paths which have been uploaded in this session.
     QStringList uploadedFiles() const { return _uploadedFiles.keys(); }
@@ -165,6 +169,9 @@ private:
     };
     UploadSession _uploadSession;
     QHash<QString, QByteArray> _uploadedFiles;
+    QHash<QString, QByteArray> _files;
+    QStringList _directories;
+    QTemporaryFile _downloadFile;
     QStringList _fileList;                      ///< List of files returned by List command
     QList<LogFile> _logFiles;                   ///< Log files served from the @MAV_LOG virtual directory
     QHash<QString, QString> _logFileTempPaths;  ///< Temp files backing @MAV_LOG downloads

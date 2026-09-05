@@ -1,0 +1,1275 @@
+{
+  "version": 1,
+  "displays": [
+    {
+      "id": "ark_osd",
+      "driver": "ark_osd",
+      "name": "ARK OSD (native)",
+      "model": "pixel",
+      "reload": {
+        "param": "OSD_LAYOUT_GEN"
+      },
+      "enable": {
+        "param": "ARK_OSD_CONFIG",
+        "disabled": 0
+      },
+      "canvases": [
+        {
+          "id": "ntsc",
+          "name": "NTSC",
+          "cols": 30,
+          "rows": 13,
+          "width": 360,
+          "height": 234
+        },
+        {
+          "id": "pal",
+          "name": "PAL",
+          "cols": 30,
+          "rows": 16,
+          "width": 360,
+          "height": 288
+        }
+      ],
+      "cell": {
+        "width": 12,
+        "height": 18
+      },
+      "font": "betaflight",
+      "profiles": 1,
+      "features": [
+        "blink",
+        "label",
+        "bbox",
+        "firmware"
+      ],
+      "elements": [
+        {
+          "id": "RSSI",
+          "name": "RSSI",
+          "width": 4,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 13,
+            "format": "pct"
+          }
+        },
+        {
+          "id": "BATTERY_VOLTAGE",
+          "name": "Battery voltage",
+          "width": 6,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 3,
+            "format": "f1",
+            "suffix": "V"
+          }
+        },
+        {
+          "id": "CELL_VOLTAGE",
+          "name": "Cell voltage",
+          "width": 6,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 15,
+            "format": "f2",
+            "suffix": "V"
+          }
+        },
+        {
+          "id": "CURRENT",
+          "name": "Current",
+          "width": 6,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 16,
+            "format": "f1",
+            "suffix": "A"
+          }
+        },
+        {
+          "id": "POWER",
+          "name": "Power",
+          "width": 5,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 17,
+            "format": "int",
+            "suffix": "W"
+          }
+        },
+        {
+          "id": "CONSUMED_MAH",
+          "name": "Consumed mAh",
+          "width": 8,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 18,
+            "format": "int",
+            "suffix": "MAH"
+          }
+        },
+        {
+          "id": "CROSSHAIR",
+          "name": "Crosshair",
+          "width": 0,
+          "height": 0,
+          "bind": {
+            "type": "crosshair"
+          }
+        },
+        {
+          "id": "HORIZON",
+          "name": "Rolled horizon",
+          "width": 0,
+          "height": 0,
+          "bind": {
+            "type": "horizon",
+            "channel": 0
+          }
+        },
+        {
+          "id": "FLIGHT_MODE",
+          "name": "Flight mode",
+          "width": 4,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 7,
+            "format": "mode"
+          }
+        },
+        {
+          "id": "ARM_STATE",
+          "name": "Arm state",
+          "width": 3,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 8,
+            "format": "arm"
+          }
+        },
+        {
+          "id": "SYSTEM_ID",
+          "name": "System id",
+          "width": 9,
+          "height": 1,
+          "bind": {
+            "type": "text",
+            "channel": 1
+          }
+        },
+        {
+          "id": "THROTTLE",
+          "name": "Throttle",
+          "width": 4,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 21,
+            "format": "pct"
+          }
+        },
+        {
+          "id": "VTX",
+          "name": "VTX",
+          "width": 12,
+          "height": 1,
+          "bind": {
+            "type": "text",
+            "channel": 3
+          }
+        },
+        {
+          "id": "GROUND_SPEED",
+          "name": "Ground speed",
+          "width": 5,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 5,
+            "format": "f0"
+          }
+        },
+        {
+          "id": "GPS_SATELLITES",
+          "name": "Satellites",
+          "width": 3,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 6,
+            "format": "int"
+          }
+        },
+        {
+          "id": "GPS_INFO",
+          "name": "GPS fix and DOP",
+          "width": 12,
+          "height": 1,
+          "bind": {
+            "type": "text",
+            "channel": 4
+          }
+        },
+        {
+          "id": "LATITUDE",
+          "name": "Latitude",
+          "width": 11,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 23,
+            "format": "latlon"
+          }
+        },
+        {
+          "id": "LONGITUDE",
+          "name": "Longitude",
+          "width": 11,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 24,
+            "format": "latlon"
+          }
+        },
+        {
+          "id": "ALTITUDE",
+          "name": "Altitude",
+          "width": 6,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 4,
+            "format": "int",
+            "suffix": "m"
+          }
+        },
+        {
+          "id": "VERTICAL_SPEED",
+          "name": "Vertical speed",
+          "width": 5,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 20,
+            "format": "f1"
+          }
+        },
+        {
+          "id": "HOME_DISTANCE",
+          "name": "Home distance",
+          "width": 6,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 19,
+            "format": "int",
+            "suffix": "m"
+          }
+        },
+        {
+          "id": "HEADING",
+          "name": "Heading",
+          "width": 3,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 2,
+            "format": "deg"
+          }
+        },
+        {
+          "id": "PITCH",
+          "name": "Pitch",
+          "width": 4,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 1,
+            "format": "sdeg"
+          }
+        },
+        {
+          "id": "ROLL",
+          "name": "Roll",
+          "width": 4,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 0,
+            "format": "sdeg"
+          }
+        },
+        {
+          "id": "COMPASS",
+          "name": "Compass ribbon",
+          "width": 0,
+          "height": 0,
+          "bind": {
+            "type": "compass",
+            "channel": 2
+          }
+        },
+        {
+          "id": "LINK_QUALITY",
+          "name": "Link quality",
+          "width": 4,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 14,
+            "format": "pct"
+          }
+        },
+        {
+          "id": "MISSION_STATE",
+          "name": "Mission state",
+          "width": 8,
+          "height": 1,
+          "bind": {
+            "type": "text",
+            "channel": 2
+          }
+        },
+        {
+          "id": "FLIGHT_TIME",
+          "name": "Flight time",
+          "width": 5,
+          "height": 1,
+          "bind": {
+            "type": "value",
+            "channel": 22,
+            "format": "time"
+          }
+        },
+        {
+          "id": "STATUS_MESSAGE",
+          "name": "Status message",
+          "width": 12,
+          "height": 1,
+          "bind": {
+            "type": "text",
+            "channel": 0
+          }
+        },
+        {
+          "id": "LABEL",
+          "name": "Static text",
+          "width": 8,
+          "height": 1,
+          "bind": {
+            "type": "label"
+          }
+        },
+        {
+          "id": "VALUE",
+          "name": "Raw channel",
+          "width": 12,
+          "height": 1,
+          "bind": {
+            "type": "value"
+          }
+        },
+        {
+          "id": "TRACKING_BOX",
+          "name": "Tracking box",
+          "width": 0,
+          "height": 0,
+          "bind": {
+            "type": "bbox",
+            "channel": 9
+          }
+        }
+      ],
+      "channels": [
+        {
+          "id": 0,
+          "name": "roll",
+          "units": "rad"
+        },
+        {
+          "id": 1,
+          "name": "pitch",
+          "units": "rad"
+        },
+        {
+          "id": 2,
+          "name": "yaw",
+          "units": "rad"
+        },
+        {
+          "id": 3,
+          "name": "battery_volts",
+          "units": "V"
+        },
+        {
+          "id": 4,
+          "name": "altitude",
+          "units": "m"
+        },
+        {
+          "id": 5,
+          "name": "ground_speed",
+          "units": "m/s"
+        },
+        {
+          "id": 6,
+          "name": "satellites"
+        },
+        {
+          "id": 7,
+          "name": "nav_state"
+        },
+        {
+          "id": 8,
+          "name": "armed"
+        },
+        {
+          "id": 9,
+          "name": "bbox_cx",
+          "units": "px"
+        },
+        {
+          "id": 10,
+          "name": "bbox_cy",
+          "units": "px"
+        },
+        {
+          "id": 11,
+          "name": "bbox_w",
+          "units": "px"
+        },
+        {
+          "id": 12,
+          "name": "bbox_h",
+          "units": "px"
+        },
+        {
+          "id": 13,
+          "name": "rssi",
+          "units": "%"
+        },
+        {
+          "id": 14,
+          "name": "link_quality",
+          "units": "%"
+        },
+        {
+          "id": 15,
+          "name": "cell_volts",
+          "units": "V"
+        },
+        {
+          "id": 16,
+          "name": "current",
+          "units": "A"
+        },
+        {
+          "id": 17,
+          "name": "power",
+          "units": "W"
+        },
+        {
+          "id": 18,
+          "name": "consumed",
+          "units": "mAh"
+        },
+        {
+          "id": 19,
+          "name": "home_distance",
+          "units": "m"
+        },
+        {
+          "id": 20,
+          "name": "vertical_speed",
+          "units": "m/s"
+        },
+        {
+          "id": 21,
+          "name": "throttle",
+          "units": "%"
+        },
+        {
+          "id": 22,
+          "name": "flight_time",
+          "units": "s"
+        },
+        {
+          "id": 23,
+          "name": "latitude",
+          "units": "deg"
+        },
+        {
+          "id": 24,
+          "name": "longitude",
+          "units": "deg"
+        }
+      ],
+      "texts": [
+        {
+          "id": 0,
+          "name": "status_message"
+        },
+        {
+          "id": 1,
+          "name": "system_id"
+        },
+        {
+          "id": 2,
+          "name": "mission_state"
+        },
+        {
+          "id": 3,
+          "name": "vtx"
+        },
+        {
+          "id": 4,
+          "name": "gps_info"
+        }
+      ],
+      "layout": {
+        "uri": "mftp://fs/microsd/osd/ark_osd.json"
+      },
+      "firmware": {
+        "uri": "mftp://fs/microsd/osd/ark-osd.bin"
+      },
+      "defaults": {
+        "version": 1,
+        "display": "ark_osd",
+        "canvas": "ntsc",
+        "elements": [
+          {
+            "id": "HORIZON",
+            "x": 180,
+            "y": 117
+          },
+          {
+            "id": "CROSSHAIR",
+            "x": 180,
+            "y": 117
+          },
+          {
+            "id": "COMPASS",
+            "x": 180,
+            "y": 4
+          },
+          {
+            "id": "BATTERY_VOLTAGE",
+            "x": 8,
+            "y": 210
+          },
+          {
+            "id": "ALTITUDE",
+            "x": 260,
+            "y": 210
+          },
+          {
+            "id": "HEADING",
+            "x": 162,
+            "y": 10
+          },
+          {
+            "id": "FLIGHT_MODE",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "id": "ARM_STATE",
+            "x": 320,
+            "y": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "atxxxx",
+      "driver": "atxxxx",
+      "name": "MAX7456 analog OSD (SPI)",
+      "model": "grid",
+      "reload": {
+        "param": "OSD_LAYOUT_GEN"
+      },
+      "enable": {
+        "param": "OSD_ATXXXX_EN",
+        "disabled": 0
+      },
+      "canvases": [
+        {
+          "id": "sd_ntsc",
+          "name": "NTSC",
+          "cols": 30,
+          "rows": 13
+        },
+        {
+          "id": "sd_pal",
+          "name": "PAL",
+          "cols": 30,
+          "rows": 16
+        }
+      ],
+      "cell": {
+        "width": 12,
+        "height": 18
+      },
+      "font": "betaflight",
+      "profiles": 1,
+      "features": [
+        "blink",
+        "label"
+      ],
+      "elements": [
+        {
+          "id": "RSSI",
+          "name": "RSSI",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "BATTERY_VOLTAGE",
+          "name": "Battery voltage",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "CELL_VOLTAGE",
+          "name": "Cell voltage",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "CURRENT",
+          "name": "Current",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "POWER",
+          "name": "Power",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "CONSUMED_MAH",
+          "name": "Consumed mAh",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "CROSSHAIR",
+          "name": "Crosshair",
+          "width": 1,
+          "height": 1
+        },
+        {
+          "id": "HORIZON",
+          "name": "Artificial horizon",
+          "width": 9,
+          "height": 9
+        },
+        {
+          "id": "FLIGHT_MODE",
+          "name": "Flight mode",
+          "width": 14,
+          "height": 1
+        },
+        {
+          "id": "ARM_STATE",
+          "name": "Arm state",
+          "width": 9,
+          "height": 1
+        },
+        {
+          "id": "SYSTEM_ID",
+          "name": "System id",
+          "width": 8,
+          "height": 1,
+          "variants": [
+            "Id and MAV state",
+            "Id",
+            "MAV state"
+          ]
+        },
+        {
+          "id": "THROTTLE",
+          "name": "Throttle",
+          "width": 4,
+          "height": 1
+        },
+        {
+          "id": "VTX",
+          "name": "VTX",
+          "width": 12,
+          "height": 1,
+          "variants": [
+            "Band, channel, power",
+            "MHz and mW"
+          ]
+        },
+        {
+          "id": "GROUND_SPEED",
+          "name": "Ground speed",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "GPS_SATELLITES",
+          "name": "Satellites",
+          "width": 4,
+          "height": 1
+        },
+        {
+          "id": "GPS_INFO",
+          "name": "GPS fix and DOP",
+          "width": 12,
+          "height": 1
+        },
+        {
+          "id": "LATITUDE",
+          "name": "Latitude",
+          "width": 13,
+          "height": 1
+        },
+        {
+          "id": "LONGITUDE",
+          "name": "Longitude",
+          "width": 14,
+          "height": 1
+        },
+        {
+          "id": "ALTITUDE",
+          "name": "Altitude",
+          "width": 9,
+          "height": 1
+        },
+        {
+          "id": "VERTICAL_SPEED",
+          "name": "Vertical speed",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "HOME_DISTANCE",
+          "name": "Home distance",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "HEADING",
+          "name": "Heading",
+          "width": 4,
+          "height": 1
+        },
+        {
+          "id": "PITCH",
+          "name": "Pitch",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "ROLL",
+          "name": "Roll",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "LINK_QUALITY",
+          "name": "Link quality",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "MISSION_STATE",
+          "name": "Mission state",
+          "width": 8,
+          "height": 1
+        },
+        {
+          "id": "FLIGHT_TIME",
+          "name": "Flight time",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "STATUS_MESSAGE",
+          "name": "Status message",
+          "width": 12,
+          "height": 1
+        },
+        {
+          "id": "LABEL",
+          "name": "Static text",
+          "width": 8,
+          "height": 1
+        }
+      ],
+      "layout": {
+        "uri": "mftp://fs/microsd/osd/atxxxx.json"
+      },
+      "defaults": {
+        "version": 1,
+        "display": "atxxxx",
+        "canvas": "sd_ntsc",
+        "elements": [
+          {
+            "id": "SYSTEM_ID",
+            "col": 1,
+            "row": 0
+          },
+          {
+            "id": "MISSION_STATE",
+            "col": 6,
+            "row": 0,
+            "visible": false
+          },
+          {
+            "id": "RSSI",
+            "col": 23,
+            "row": 0
+          },
+          {
+            "id": "BATTERY_VOLTAGE",
+            "col": 1,
+            "row": 1
+          },
+          {
+            "id": "LINK_QUALITY",
+            "col": 23,
+            "row": 1,
+            "visible": false
+          },
+          {
+            "id": "CONSUMED_MAH",
+            "col": 2,
+            "row": 2
+          },
+          {
+            "id": "GPS_INFO",
+            "col": 8,
+            "row": 2,
+            "visible": false
+          },
+          {
+            "id": "GPS_SATELLITES",
+            "col": 20,
+            "row": 2
+          },
+          {
+            "id": "GROUND_SPEED",
+            "col": 24,
+            "row": 2
+          },
+          {
+            "id": "ALTITUDE",
+            "col": 1,
+            "row": 3
+          },
+          {
+            "id": "HOME_DISTANCE",
+            "col": 23,
+            "row": 3
+          },
+          {
+            "id": "CURRENT",
+            "col": 1,
+            "row": 4
+          },
+          {
+            "id": "VTX",
+            "col": 19,
+            "row": 4,
+            "visible": false
+          },
+          {
+            "id": "VERTICAL_SPEED",
+            "col": 23,
+            "row": 5
+          },
+          {
+            "id": "HORIZON",
+            "col": 11,
+            "row": 2,
+            "visible": false
+          },
+          {
+            "id": "PITCH",
+            "col": 1,
+            "row": 7,
+            "visible": false
+          },
+          {
+            "id": "ROLL",
+            "col": 7,
+            "row": 7,
+            "visible": false
+          },
+          {
+            "id": "LATITUDE",
+            "col": 1,
+            "row": 9
+          },
+          {
+            "id": "LONGITUDE",
+            "col": 1,
+            "row": 10
+          },
+          {
+            "id": "HEADING",
+            "col": 24,
+            "row": 10,
+            "visible": false
+          },
+          {
+            "id": "ARM_STATE",
+            "col": 1,
+            "row": 11
+          },
+          {
+            "id": "FLIGHT_MODE",
+            "col": 9,
+            "row": 11,
+            "visible": false
+          },
+          {
+            "id": "THROTTLE",
+            "col": 24,
+            "row": 11,
+            "visible": false
+          },
+          {
+            "id": "FLIGHT_TIME",
+            "col": 1,
+            "row": 12,
+            "visible": false
+          },
+          {
+            "id": "STATUS_MESSAGE",
+            "col": 17,
+            "row": 12,
+            "visible": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "msp_osd",
+      "driver": "msp_osd",
+      "name": "MSP DisplayPort (UART)",
+      "model": "grid",
+      "reload": {
+        "param": "OSD_LAYOUT_GEN"
+      },
+      "enable": {
+        "param": "MSP_OSD_CONFIG",
+        "disabled": 0
+      },
+      "canvases": [
+        {
+          "id": "sd_ntsc",
+          "name": "SD NTSC",
+          "cols": 30,
+          "rows": 13
+        },
+        {
+          "id": "sd_pal",
+          "name": "SD PAL",
+          "cols": 30,
+          "rows": 16
+        },
+        {
+          "id": "hd",
+          "name": "HD",
+          "cols": 53,
+          "rows": 20
+        }
+      ],
+      "cell": {
+        "width": 12,
+        "height": 18
+      },
+      "font": "betaflight",
+      "profiles": 1,
+      "features": [
+        "blink",
+        "label"
+      ],
+      "elements": [
+        {
+          "id": "RSSI",
+          "name": "RSSI",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "BATTERY_VOLTAGE",
+          "name": "Battery voltage",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "CELL_VOLTAGE",
+          "name": "Cell voltage",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "CURRENT",
+          "name": "Current",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "POWER",
+          "name": "Power",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "CONSUMED_MAH",
+          "name": "Consumed mAh",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "CROSSHAIR",
+          "name": "Crosshair",
+          "width": 1,
+          "height": 1
+        },
+        {
+          "id": "HORIZON",
+          "name": "Artificial horizon",
+          "width": 9,
+          "height": 9
+        },
+        {
+          "id": "FLIGHT_MODE",
+          "name": "Flight mode",
+          "width": 14,
+          "height": 1
+        },
+        {
+          "id": "ARM_STATE",
+          "name": "Arm state",
+          "width": 9,
+          "height": 1
+        },
+        {
+          "id": "SYSTEM_ID",
+          "name": "System id",
+          "width": 8,
+          "height": 1,
+          "variants": [
+            "Id and MAV state",
+            "Id",
+            "MAV state"
+          ]
+        },
+        {
+          "id": "THROTTLE",
+          "name": "Throttle",
+          "width": 4,
+          "height": 1
+        },
+        {
+          "id": "VTX",
+          "name": "VTX",
+          "width": 12,
+          "height": 1,
+          "variants": [
+            "Band, channel, power",
+            "MHz and mW"
+          ]
+        },
+        {
+          "id": "GROUND_SPEED",
+          "name": "Ground speed",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "GPS_SATELLITES",
+          "name": "Satellites",
+          "width": 4,
+          "height": 1
+        },
+        {
+          "id": "GPS_INFO",
+          "name": "GPS fix and DOP",
+          "width": 12,
+          "height": 1
+        },
+        {
+          "id": "LATITUDE",
+          "name": "Latitude",
+          "width": 13,
+          "height": 1
+        },
+        {
+          "id": "LONGITUDE",
+          "name": "Longitude",
+          "width": 14,
+          "height": 1
+        },
+        {
+          "id": "ALTITUDE",
+          "name": "Altitude",
+          "width": 9,
+          "height": 1
+        },
+        {
+          "id": "VERTICAL_SPEED",
+          "name": "Vertical speed",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "HOME_DISTANCE",
+          "name": "Home distance",
+          "width": 6,
+          "height": 1
+        },
+        {
+          "id": "HEADING",
+          "name": "Heading",
+          "width": 4,
+          "height": 1
+        },
+        {
+          "id": "PITCH",
+          "name": "Pitch",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "ROLL",
+          "name": "Roll",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "LINK_QUALITY",
+          "name": "Link quality",
+          "width": 5,
+          "height": 1
+        },
+        {
+          "id": "MISSION_STATE",
+          "name": "Mission state",
+          "width": 8,
+          "height": 1
+        },
+        {
+          "id": "FLIGHT_TIME",
+          "name": "Flight time",
+          "width": 7,
+          "height": 1
+        },
+        {
+          "id": "STATUS_MESSAGE",
+          "name": "Status message",
+          "width": 12,
+          "height": 1
+        },
+        {
+          "id": "LABEL",
+          "name": "Static text",
+          "width": 8,
+          "height": 1
+        }
+      ],
+      "layout": {
+        "uri": "mftp://fs/microsd/osd/msp_osd.json"
+      },
+      "defaults": {
+        "version": 1,
+        "display": "msp_osd",
+        "canvas": "sd_ntsc",
+        "elements": [
+          {
+            "id": "RSSI",
+            "col": 1,
+            "row": 0
+          },
+          {
+            "id": "STATUS_MESSAGE",
+            "col": 9,
+            "row": 0
+          },
+          {
+            "id": "GPS_SATELLITES",
+            "col": 25,
+            "row": 0
+          },
+          {
+            "id": "CROSSHAIR",
+            "col": 14,
+            "row": 6
+          },
+          {
+            "id": "CELL_VOLTAGE",
+            "col": 1,
+            "row": 11
+          },
+          {
+            "id": "CURRENT",
+            "col": 1,
+            "row": 12
+          },
+          {
+            "id": "CONSUMED_MAH",
+            "col": 8,
+            "row": 12
+          },
+          {
+            "id": "ALTITUDE",
+            "col": 20,
+            "row": 11
+          },
+          {
+            "id": "GROUND_SPEED",
+            "col": 23,
+            "row": 12
+          },
+          {
+            "id": "HOME_DISTANCE",
+            "col": 15,
+            "row": 12
+          },
+          {
+            "id": "LATITUDE",
+            "col": 1,
+            "row": 1,
+            "visible": false
+          },
+          {
+            "id": "LONGITUDE",
+            "col": 1,
+            "row": 2,
+            "visible": false
+          },
+          {
+            "id": "PITCH",
+            "col": 24,
+            "row": 1,
+            "visible": false
+          },
+          {
+            "id": "ROLL",
+            "col": 24,
+            "row": 2,
+            "visible": false
+          }
+        ]
+      }
+    }
+  ]
+}

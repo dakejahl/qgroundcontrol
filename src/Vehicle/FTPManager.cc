@@ -83,7 +83,7 @@ bool FTPManager::download(uint8_t fromCompId, const QString& fromURI, const QStr
     return true;
 }
 
-bool FTPManager::upload(uint8_t toCompId, const QString& toURI, const QString& fromFile)
+bool FTPManager::upload(uint8_t toCompId, const QString& toURI, const QString& fromFile, bool createParentDirectory)
 {
     qCDebug(FTPManagerLog) << "upload fromFile:" << fromFile << "toURI:" << toURI << "toCompId:" << toCompId;
 
@@ -123,6 +123,11 @@ bool FTPManager::upload(uint8_t toCompId, const QString& toURI, const QString& f
         qCWarning(FTPManagerLog) << "_parseURI failed";
         _uploadState.reset();
         return false;
+    }
+
+    if (createParentDirectory) {
+        _rgStateMachine.append({&FTPManager::_createUploadDirectoryBegin, &FTPManager::_createUploadDirectoryAckOrNak,
+                                &FTPManager::_createUploadDirectoryTimeout});
     }
 
     static const StateFunctions_t rgUploadStateMachine[] = {
@@ -425,6 +430,38 @@ void FTPManager::_deleteComplete(const QString& errorMsg)
     _deleteState.reset();
 
     emit deleteComplete(deletedPath, errorMsg);
+}
+
+void FTPManager::_createUploadDirectoryBegin()
+{
+    MavlinkFTP::Request request{};
+    request.hdr.opcode = MavlinkFTP::kCmdCreateDirectory;
+    const QString directory = _uploadState.fullPathOnVehicle.left(_uploadState.fullPathOnVehicle.lastIndexOf('/'));
+    _fillRequestDataWithString(&request, directory);
+    _sendRequestExpectAck(&request);
+}
+
+void FTPManager::_createUploadDirectoryAckOrNak(const MavlinkFTP::Request* ackOrNak)
+{
+    if (ackOrNak->hdr.req_opcode != MavlinkFTP::kCmdCreateDirectory ||
+        ackOrNak->hdr.seqNumber != _expectedIncomingSeqNumber) {
+        return;
+    }
+    _ackOrNakTimeoutTimer.stop();
+    const bool exists =
+        ackOrNak->hdr.opcode == MavlinkFTP::kRspNak &&
+        ((ackOrNak->hdr.size == 1 && ackOrNak->data[0] == MavlinkFTP::kErrFailFileExists) ||
+         (ackOrNak->hdr.size == 2 && ackOrNak->data[0] == MavlinkFTP::kErrFailErrno && ackOrNak->data[1] == EEXIST));
+    if (ackOrNak->hdr.opcode == MavlinkFTP::kRspAck || exists) {
+        _advanceStateMachine();
+    } else {
+        _uploadComplete(tr("Cannot create upload directory: %1").arg(_errorMsgFromNak(ackOrNak)));
+    }
+}
+
+void FTPManager::_createUploadDirectoryTimeout()
+{
+    _uploadComplete(tr("Cannot create upload directory: no response from vehicle."));
 }
 
 void FTPManager::_createFileBegin(void)

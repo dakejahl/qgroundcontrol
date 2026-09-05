@@ -1,4 +1,5 @@
 #include "Vehicle.h"
+#include "OsdController.h"
 #include "Actuators.h"
 #include "BatteryFactGroupListModel.h"
 #include "EscStatusFactGroupListModel.h"
@@ -3571,3 +3572,11 @@ void Vehicle::setEventsMetadata(uint8_t compid, const QString &metadataJsonFileN
 }
 
 /*---------------------------------------------------------------------------*/
+
+OsdController* Vehicle::osdController()
+{
+    if (!_osdController) {
+        _osdController = new OsdController(this, this);
+    }
+    return _osdController;
+}

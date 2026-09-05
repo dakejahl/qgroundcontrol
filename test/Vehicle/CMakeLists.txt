@@ -57,6 +57,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_
 # Component Information Tests
 # ----------------------------------------------------------------------------
 add_subdirectory(ComponentInformation)
+add_subdirectory(OSD)
 
 add_qgc_test(APMAirframeComponentControllerTest LABELS Integration Vehicle)
 add_qgc_test(APMStartMissionTest LABELS Integration Vehicle)

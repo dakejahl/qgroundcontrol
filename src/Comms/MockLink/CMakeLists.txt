@@ -31,6 +31,9 @@ qt_add_resources(${CMAKE_PROJECT_NAME} mocklink_resources
     FILES
         GenericMockLink.params
         PX4MockLink.params
+        MockLink.Osd.MetaData.json
+        MockLink.Osd.MetaData.json.xz
+        MockLink.Osd.General.MetaData.json
         MockLink.General.MetaData.json
         MockLink.General.MetaData.json.xz
         MockLink.Parameter.MetaData.json.xz

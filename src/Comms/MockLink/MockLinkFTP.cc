@@ -146,6 +146,25 @@ void MockLinkFTP::_openCommand(uint8_t senderSystemId, uint8_t senderComponentId
     if (path.startsWith(sizePrefix)) {
         const QString sizeString = path.right(path.length() - sizePrefix.length());
         tmpFilename = _createTestTempFile(sizeString.toInt());
+    } else if (_files.contains(path)) {
+        if (!_downloadFile.isOpen() && !_downloadFile.open()) {
+            _sendNak(senderSystemId, senderComponentId, MavlinkFTP::kErrFail, outgoingSeqNumber,
+                     MavlinkFTP::kCmdOpenFileRO);
+            return;
+        }
+        _downloadFile.resize(0);
+        _downloadFile.seek(0);
+        const QByteArray bytes = _files.value(path);
+        if (_downloadFile.write(bytes) != bytes.size() || !_downloadFile.flush()) {
+            _sendNak(senderSystemId, senderComponentId, MavlinkFTP::kErrFail, outgoingSeqNumber,
+                     MavlinkFTP::kCmdOpenFileRO);
+            return;
+        }
+        tmpFilename = _downloadFile.fileName();
+    } else if (path == "/general-osd.json") {
+        tmpFilename = QStringLiteral(":/MockLink/MockLink.Osd.General.MetaData.json");
+    } else if (path == "/etc/extras/osd.json.xz") {
+        tmpFilename = QStringLiteral(":/MockLink/MockLink.Osd.MetaData.json.xz");
     } else if (path == "/general.json") {
         tmpFilename = QStringLiteral(":MockLink/General.MetaData.json");
     } else if (path == "/general.json.xz") {
@@ -198,6 +217,12 @@ void MockLinkFTP::_createFileCommand(uint8_t senderSystemId, uint8_t senderCompo
 
     if (path.isEmpty()) {
         _sendNak(senderSystemId, senderComponentId, MavlinkFTP::kErrFail, outgoingSeqNumber, MavlinkFTP::kCmdCreateFile);
+        return;
+    }
+
+    if (path.startsWith(QStringLiteral("/fs/microsd/osd/")) &&
+        !_directories.contains(QStringLiteral("/fs/microsd/osd"))) {
+        _sendNakErrno(senderSystemId, senderComponentId, ENOENT, outgoingSeqNumber, MavlinkFTP::kCmdCreateFile);
         return;
     }
 
@@ -452,6 +477,7 @@ void MockLinkFTP::_finalizeActiveUpload()
 
     if (!_uploadSession.remotePath.isEmpty()) {
         _uploadedFiles.insert(_uploadSession.remotePath, _uploadSession.buffer);
+        _files.insert(_uploadSession.remotePath, _uploadSession.buffer);
     }
 
     _uploadSession.reset();
@@ -522,6 +548,17 @@ void MockLinkFTP::mavlinkMessageReceived(const mavlink_message_t &message)
     case MavlinkFTP::kCmdOpenFileRO:
         _openCommand(message.sysid, message.compid, request, incomingSeqNumber);
         break;
+    case MavlinkFTP::kCmdCreateDirectory: {
+        ensureNullTemination(request);
+        const QString path = QString::fromUtf8(reinterpret_cast<const char*>(request->data));
+        if (_directories.contains(path)) {
+            _sendNakErrno(message.sysid, message.compid, EEXIST, outgoingSeqNumber, MavlinkFTP::kCmdCreateDirectory);
+        } else {
+            _directories.append(path);
+            _sendAck(message.sysid, message.compid, outgoingSeqNumber, MavlinkFTP::kCmdCreateDirectory);
+        }
+        break;
+    }
     case MavlinkFTP::kCmdCreateFile:
         _createFileCommand(message.sysid, message.compid, request, incomingSeqNumber);
         break;
