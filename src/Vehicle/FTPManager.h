@@ -33,14 +33,17 @@ public:
     bool download(uint8_t fromCompId, const QString& fromURI, const QString& toDir, const QString& fileName="", bool checksize = true);
 
     /// Uploads a local file to the specified URI on the vehicle.
-    ///     @param toCompId Component id of the component to upload to. If toCompId is MAV_COMP_ID_ALL, then MAV_COMP_ID_AUTOPILOT1 is used.
-    ///     @param toURI    Destination file path on the vehicle, fully qualified. May include mftp:// scheme and optional component id selector.
+    ///     @param toCompId Component id of the component to upload to. If toCompId is MAV_COMP_ID_ALL, then
+    ///     MAV_COMP_ID_AUTOPILOT1 is used.
+    ///     @param toURI    Destination file path on the vehicle, fully qualified. May include mftp:// scheme and
+    ///     optional component id selector.
     ///     @param fromFile Local filesystem path of the file to upload.
+    ///     @param createParentDirectory Create the immediate destination directory if missing (not recursive).
     /// @return true: upload started, false: error, no upload
     /// Signals uploadComplete, commandProgress
-    bool upload(uint8_t toCompId, const QString& toURI, const QString& fromFile);
+    bool upload(uint8_t toCompId, const QString& toURI, const QString& fromFile, bool createParentDirectory = false);
 
-	/// Get the directory listing of the specified directory.
+    /// Get the directory listing of the specified directory.
     ///     @param fromCompId Component id of the component to download from. If fromCompId is MAV_COMP_ID_ALL, then MAV_COMP_ID_AUTOPILOT1 is used.
     ///     @param fromURI    Directory path to list from component. May be in the format "mftp://[;comp=<id>]..." where the component id
     ///                       is specified. If component id is not specified, then the id set via fromCompId is used.
@@ -230,6 +233,9 @@ private:
     void    _deleteCompleteNoError      (void) { _deleteComplete(QString()); }
     void    _deleteComplete             (const QString& errorMsg);
 
+    void _createUploadDirectoryBegin();
+    void _createUploadDirectoryAckOrNak(const MavlinkFTP::Request* ackOrNak);
+    void _createUploadDirectoryTimeout();
     void    _createFileBegin            (void);
     void    _createFileAckOrNak         (const MavlinkFTP::Request* ackOrNak);
     void    _createFileTimeout          (void);

@@ -6,6 +6,7 @@
 #include "CompInfoParam.h"
 #include "CompInfoEvents.h"
 #include "CompInfoActuators.h"
+#include "CompInfoOsd.h"
 #include "QGCCachedFileDownload.h"
 #include "QGCLoggingCategory.h"
 
@@ -27,6 +28,9 @@ ComponentInformationManager::ComponentInformationManager(Vehicle *vehicle, QObje
     _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_PARAMETER]  = new CompInfoParam     (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
     _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_EVENTS]     = new CompInfoEvents    (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
     _compInfoMap[MAV_COMP_ID_AUTOPILOT1][COMP_METADATA_TYPE_ACTUATORS]  = new CompInfoActuators (MAV_COMP_ID_AUTOPILOT1, vehicle, this);
+
+    _compInfoMap[MAV_COMP_ID_AUTOPILOT1][CompInfoOsd::METADATA_TYPE] =
+        new CompInfoOsd(MAV_COMP_ID_AUTOPILOT1, vehicle, this);
 
     _createStates();
     _wireTransitions();
@@ -92,7 +96,15 @@ void ComponentInformationManager::_createStates()
     );
     registerState(_stateRequestActuators);
 
-    // State 6: Signal completion
+    _stateRequestOsd = new SkippableAsyncState(
+        QStringLiteral("RequestOsd"), this, [this]() { return !_isCompTypeSupported(CompInfoOsd::METADATA_TYPE); },
+        [this](SkippableAsyncState* state) {
+            state->connectToCompletion(&_requestTypeStateMachine, &RequestMetaDataTypeStateMachine::requestComplete);
+            _requestTypeStateMachine.request(_compInfoMap[MAV_COMP_ID_AUTOPILOT1][CompInfoOsd::METADATA_TYPE]);
+        });
+    registerState(_stateRequestOsd);
+
+    // State 7: Signal completion
     _stateComplete = addFunctionState(
         QStringLiteral("Complete"),
         [this]() { _signalComplete(); }
@@ -118,9 +130,10 @@ void ComponentInformationManager::_wireTransitions()
     _stateRequestEvents->addTransition(_stateRequestEvents, &SkippableAsyncState::advance, _stateRequestActuators);
     _stateRequestEvents->addTransition(_stateRequestEvents, &SkippableAsyncState::skipped, _stateRequestActuators);
 
-    // RequestActuators -> Complete (via advance or skipped)
-    _stateRequestActuators->addTransition(_stateRequestActuators, &SkippableAsyncState::advance, _stateComplete);
-    _stateRequestActuators->addTransition(_stateRequestActuators, &SkippableAsyncState::skipped, _stateComplete);
+    _stateRequestActuators->addTransition(_stateRequestActuators, &SkippableAsyncState::advance, _stateRequestOsd);
+    _stateRequestActuators->addTransition(_stateRequestActuators, &SkippableAsyncState::skipped, _stateRequestOsd);
+    _stateRequestOsd->addTransition(_stateRequestOsd, &SkippableAsyncState::advance, _stateComplete);
+    _stateRequestOsd->addTransition(_stateRequestOsd, &SkippableAsyncState::skipped, _stateComplete);
 
     // Complete -> Final
     _stateComplete->addTransition(_stateComplete, &FunctionState::advance, _stateFinal);
@@ -153,8 +166,13 @@ void ComponentInformationManager::_wireProgressTracking()
         _updateProgress();
     });
 
-    _stateComplete->setOnEntry([this]() {
+    _stateRequestOsd->setOnEntry([this]() {
         _currentStateIndex = 5;
+        _updateProgress();
+    });
+
+    _stateComplete->setOnEntry([this]() {
+        _currentStateIndex = 6;
         _updateProgress();
     });
 }

@@ -15,6 +15,7 @@ public:
 
 private slots:
     void _testNavigateVehicleConfig();
+    void _testOsdEditor();
     void _testDisconnectWithPIDTuningOpen();
 
 private:

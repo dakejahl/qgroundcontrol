@@ -9,6 +9,8 @@ target_sources(${CMAKE_PROJECT_NAME}
         ESP8266Component.h
         ESP8266ComponentController.cc
         ESP8266ComponentController.h
+        OsdComponent.cc
+        OsdComponent.h
         ScriptingComponent.cc
         ScriptingComponent.h
         MotorComponent.cc
@@ -39,6 +41,9 @@ qt_add_qml_module(AutoPilotPluginsCommonModule
     QML_FILES
         ESP8266Component.qml
         ESP8266ComponentSummary.qml
+        OsdComponent.qml
+        OsdEditor.qml
+        OsdCanvas.qml
         ScriptingComponent.qml
         JoystickComponentSummary.qml
         MotorComponent.qml

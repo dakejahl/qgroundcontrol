@@ -70,6 +70,7 @@ class ParameterManager;
 class RequestMessageCoordinator;
 class QGCCameraManager;
 class RallyPointManager;
+class OsdController;
 class RemoteIDManager;
 class RequestMessageTest;
 class RetryableRequestMessageStateTest;
@@ -88,6 +89,8 @@ class Vehicle : public VehicleFactGroup, public VehicleTypes
     Q_OBJECT
     QML_ELEMENT
     QML_UNCREATABLE("")
+    Q_MOC_INCLUDE("OsdController.h")
+    Q_PROPERTY(OsdController* osdController READ osdController CONSTANT)
     Q_MOC_INCLUDE("Actuators.h")
     Q_MOC_INCLUDE("AutoPilotPlugin.h")
     Q_MOC_INCLUDE("Autotune.h")
@@ -577,7 +580,9 @@ public:
     ParameterManager*               parameterManager    () { return _parameterManager; }
     ParameterManager*               parameterManager    () const { return _parameterManager; }
     VehicleLinkManager*             vehicleLinkManager  () { return _vehicleLinkManager; }
-    FTPManager*                     ftpManager          () { return _ftpManager; }
+    FTPManager* ftpManager() { return _ftpManager; }
+
+    OsdController* osdController();
     ComponentInformationManager*    compInfoManager     () { return _componentInformationManager; }
     VehicleObjectAvoidance*         objectAvoidance     () { return _objectAvoidance; }
     Autotune*                       autotune            () const { return _autotune; }
@@ -1129,6 +1134,7 @@ public:
     GeoFenceManager*                _geoFenceManager            = nullptr;
     RallyPointManager*              _rallyPointManager          = nullptr;
     VehicleLinkManager*             _vehicleLinkManager         = nullptr;
+    OsdController* _osdController = nullptr;
     FTPManager*                     _ftpManager                 = nullptr;
     InitialConnectStateMachine*     _initialConnectStateMachine = nullptr;
     Actuators*                      _actuators                  = nullptr;

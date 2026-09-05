@@ -9,6 +9,8 @@ target_sources(${CMAKE_PROJECT_NAME}
         CompInfo.h
         CompInfoActuators.cc
         CompInfoActuators.h
+        CompInfoOsd.cc
+        CompInfoOsd.h
         CompInfoEvents.cc
         CompInfoEvents.h
         CompInfoGeneral.cc

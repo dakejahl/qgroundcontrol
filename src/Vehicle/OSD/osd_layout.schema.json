@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mavlink.io/component_metadata/osd_layout.schema.json",
+  "title": "OSD layout document",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "display",
+    "canvas",
+    "elements"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1
+    },
+    "display": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$"
+    },
+    "canvas": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$"
+    },
+    "elements": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/element"
+      }
+    },
+    "betaflight": {
+      "type": "object",
+      "description": "The rest of MSP_OSD_CONFIG for interchange with a Betaflight target; ignored by PX4 drivers"
+    }
+  },
+  "$defs": {
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$"
+        },
+        "col": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 63
+        },
+        "row": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 31
+        },
+        "x": {
+          "type": "integer",
+          "minimum": -32768,
+          "maximum": 32767
+        },
+        "y": {
+          "type": "integer",
+          "minimum": -32768,
+          "maximum": 32767
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        },
+        "profiles": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "default": [
+            1
+          ]
+        },
+        "variant": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "default": 0
+        },
+        "blink": {
+          "type": "boolean",
+          "default": false
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 8,
+          "pattern": "^[ -~]*$"
+        },
+        "bind": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "channel": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 31
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "int",
+                "f1",
+                "f0",
+                "deg",
+                "mode",
+                "arm",
+                "f2",
+                "latlon",
+                "time",
+                "sdeg",
+                "pct"
+              ]
+            },
+            "suffix": {
+              "type": "string",
+              "maxLength": 8,
+              "pattern": "^[ -~]*$"
+            }
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "col",
+            "row"
+          ]
+        },
+        {
+          "required": [
+            "x",
+            "y"
+          ]
+        }
+      ],
+      "dependencies": {
+        "col": [
+          "row"
+        ],
+        "row": [
+          "col"
+        ],
+        "x": [
+          "y"
+        ],
+        "y": [
+          "x"
+        ]
+      }
+    }
+  }
+}

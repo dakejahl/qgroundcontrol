@@ -7,6 +7,7 @@
 #include "FTPManager.h"
 #include "QGCCompression.h"
 #include "CompInfoGeneral.h"
+#include "CompInfoOsd.h"
 #include "QGCCachedFileDownload.h"
 #include "QGCLoggingCategory.h"
 
@@ -193,6 +194,8 @@ QString RequestMetaDataTypeStateMachine::typeToString() const
     case COMP_METADATA_TYPE_COMMANDS: return "COMP_METADATA_TYPE_COMMANDS";
     case COMP_METADATA_TYPE_PERIPHERALS: return "COMP_METADATA_TYPE_PERIPHERALS";
     case COMP_METADATA_TYPE_EVENTS: return "COMP_METADATA_TYPE_EVENTS";
+    case CompInfoOsd::METADATA_TYPE:
+        return "COMP_METADATA_TYPE_OSD";
     case COMP_METADATA_TYPE_ACTUATORS: return "COMP_METADATA_TYPE_ACTUATORS";
     default: return "Unknown";
     }

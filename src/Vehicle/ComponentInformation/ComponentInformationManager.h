@@ -77,12 +77,13 @@ private:
     SkippableAsyncState*    _stateRequestParam      = nullptr;
     SkippableAsyncState*    _stateRequestEvents     = nullptr;
     SkippableAsyncState*    _stateRequestActuators  = nullptr;
+    SkippableAsyncState* _stateRequestOsd = nullptr;
     FunctionState*          _stateComplete          = nullptr;
     QGCFinalState*          _stateFinal             = nullptr;
 
     // Progress tracking
     int _currentStateIndex = 0;
-    static constexpr int _stateCount = 6;
+    static constexpr int _stateCount = 7;
 
     friend class RequestMetaDataTypeStateMachine;
 };

@@ -3134,16 +3134,15 @@ void MockLink::_sendGeneralMetaData()
 {
     static constexpr const char metaDataURI[MAVLINK_MSG_COMPONENT_METADATA_FIELD_URI_LEN] = "mftp://[;comp=1]general.json"; ///< "https://bit.ly/31nm0fs"
 
+    const bool osd = _firmwareType == MAV_AUTOPILOT_PX4;
+    static constexpr const char osdMetaDataURI[MAVLINK_MSG_COMPONENT_METADATA_FIELD_URI_LEN] =
+        "mftp://general-osd.json";
     mavlink_message_t responseMsg{};
     (void) mavlink_msg_component_metadata_pack_chan(
-        _vehicleSystemId,
-        _vehicleComponentId,
-        _outgoingMavlinkChannel,
-        &responseMsg,
-        0, // time_boot_ms
-        25436021, // general_metadata_file_crc (crc32 of General.MetaData.json)
-        metaDataURI
-    );
+        _vehicleSystemId, _vehicleComponentId, _outgoingMavlinkChannel, &responseMsg,
+        0,                              // time_boot_ms
+        osd ? 803896702U : 25436021U,  // CRC32 of the selected general metadata
+        osd ? osdMetaDataURI : metaDataURI);
     respondWithMavlinkMessage(responseMsg);
 }
 
