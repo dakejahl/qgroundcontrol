@@ -5,11 +5,44 @@
 #include <QtTest/QTest>
 
 #include "MockLink.h"
+#include "OsdController.h"
 
 #include <QtCore/QPointer>
 #include "Vehicle.h"
 
 UT_REGISTER_TEST(PX4VehicleConfigUITest, TestLabel::Integration)
+
+void PX4VehicleConfigUITest::_testOsdEditor()
+{
+    runWithMockLink([] { return MockLink::startPX4MockLink(); },
+                    [&](QPointer<MockLink>, Vehicle* vehicle) {
+                        QVERIFY(vehicle);
+                        auto* controller = vehicle->osdController();
+                        QVERIFY(controller->available());
+                        QCOMPARE(controller->displayIndex(), -1);
+                        navigateToConfigureView();
+                        if (QTest::currentTestFailed())
+                            return;
+                        clickSidebarButton(QStringLiteral("vehicleConfig_comp_OSD"));
+                        if (QTest::currentTestFailed())
+                            return;
+
+                        QTRY_VERIFY_WITH_TIMEOUT(controller->ready() && !controller->busy(), TestTimeout::longMs());
+                        QCOMPARE(controller->displayIndex(), 0);
+                        auto* selector = findVisibleItem(_rootItem, QStringLiteral("osdDisplaySelector"));
+                        QVERIFY(selector);
+                        QCOMPARE(selector->property("count").toInt(), controller->displays().size());
+                        auto* canvas = findVisibleItem(_rootItem, QStringLiteral("osdCanvas"));
+                        QVERIFY(canvas);
+                        QCOMPARE(canvas->property("layout").value<OsdLayout*>(), controller->layout());
+                        QVERIFY(canvas->width() > 0);
+                        QVERIFY(canvas->height() > 0);
+                        const int count = controller->layout()->elements().size();
+                        QVERIFY(count > 0);
+                        QVERIFY(clickButton(QStringLiteral("osdAddButton")));
+                        QCOMPARE(controller->layout()->elements().size(), count + 1);
+                    });
+}
 
 void PX4VehicleConfigUITest::_testNavigateVehicleConfig()
 {
